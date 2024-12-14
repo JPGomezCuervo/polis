@@ -1,0 +1,60 @@
+Table Unities {
+  UNI_ID int [primary key]
+  UNI_TOWER int [not null]
+  UNI_APT int [not null]
+  RC_ID int [ref: < ResidentialComplexes.RC_ID]
+
+  indexes {
+    (UNI_APT, UNI_TOWER) [unique]
+  }
+}
+
+Table Users {
+  US_ID int [primary key]
+  US_NAME varchar [not null]
+  US_EMAIL varchar [unique]
+  US_TEL varchar [unique]
+  US_CREATED timestamp
+}
+
+Table Owners {
+  UNI_ID int [ref: < Unities.UNI_ID]
+  US_ID int [ref: < Users.US_ID]
+  primary key (UNI_ID, US_ID)
+}
+
+Table Group {
+  GR_ID int [primary key]
+  US_ID int [ref: < Users.US_ID]
+  UNI_ID int [ref: < Unities.UNI_ID]
+  LIVING bool
+  GR_CREATED timestamp
+}
+
+Table Guests {
+  GUE_NAME varchar [not null]
+  GUE_IDENT varchar [not null]
+  GUE_PHOTO varchar
+  GUE_EXPIRATION timestamp
+  TAG_TYPE int [ref: < Tags.TAG_TYPE]
+}
+
+Table Tags {
+  TAG_TYPE int [primary key]
+}
+
+Table Authorizations {
+  GR_ID int [ref: < Group.GR_ID]
+  GUE_ID int [ref: < Group.GR_ID]
+  primary key (GR_ID, GUE_ID)
+}
+
+
+Table ResidentialComplexes {
+  RC_ID int
+  RC_NAME varchar
+  RC_ADDR varchar
+  CITY int
+  COUNTRY int
+  primary key(RNAME, RADDR) [unique]
+}
